@@ -101,8 +101,9 @@ module.exports = (robot) ->
 
   robot.respond /scorekeeper$|show(?: me)?(?: the)? (?:scorekeeper|scoreboard)$/i, (msg) ->
     scorekeeper.rank (error, result) ->
-      msg.send (for rank, name of result
-        "#{parseInt(rank) + 1} : #{name}"
+      msg.send (for rank, user of result
+        "#{parseInt(rank) + 1} : " + scorekeeper.score user, (error, result) ->
+        "#{user} (#{result} pts)"
       ).join("\n")
 
   robot.respond /scorekeeper (.+)$|what(?:'s| is)(?: the)? score of (.+)\??$/i, (msg) ->
