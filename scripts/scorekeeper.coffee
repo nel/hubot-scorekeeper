@@ -103,7 +103,7 @@ module.exports = (robot) ->
     scorekeeper.rank (error, result) -> 
       msg.send (for rank, user of result
         user_part = scorekeeper.score user, (error, result) ->
-          return "#{user} (#{result} pts)"
+          "#{user} (#{result} pts)"
         "#{parseInt(rank) + 1} : " + user_part
       ).join("\n")
 
