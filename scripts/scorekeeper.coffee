@@ -100,10 +100,10 @@ module.exports = (robot) ->
       msg.send "decremented #{user} (#{result} pt)"
 
   robot.respond /scorekeeper$|show(?: me)?(?: the)? (?:scorekeeper|scoreboard)$/i, (msg) ->
-    scorekeeper.rank (error, result) ->
-      user_part = scorekeeper.score user, (error, result) ->
-        return "#{user} (#{result} pts)"
+    scorekeeper.rank (error, result) -> 
       msg.send (for rank, user of result
+        user_part = scorekeeper.score user, (error, result) ->
+          return "#{user} (#{result} pts)"
         "#{parseInt(rank) + 1} : " + user_part
       ).join("\n")
 
