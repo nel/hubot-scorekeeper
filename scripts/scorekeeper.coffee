@@ -43,6 +43,14 @@ class Scorekeeper
     @_save()
     @score user, func
 
+  kill: (user, func) ->
+    unless @_loaded
+      setTimeout((=> @kill(user,func)), 200)
+      return
+    delete @_scores[user]
+    @_save()
+    @score user, func
+
   score: (user, func) ->
     func false, @_scores[user] or 0
 
@@ -84,6 +92,11 @@ module.exports = (robot) ->
   robot.hear /(.+)\-\-$/, (msg) ->
     user = userName(msg.match[1])
     scorekeeper.decrement user, (error, result) ->
+      msg.send "decremented #{user} (#{result} pt)"
+
+  robot.hear /(.+)\$\$$/, (msg) ->
+    user = userName(msg.match[1])
+    scorekeeper.kill user, (error, result) ->
       msg.send "decremented #{user} (#{result} pt)"
 
   robot.respond /scorekeeper$|show(?: me)?(?: the)? (?:scorekeeper|scoreboard)$/i, (msg) ->
